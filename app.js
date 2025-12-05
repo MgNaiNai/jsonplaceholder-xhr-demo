@@ -1,45 +1,56 @@
-// Function to get data from an API using XMLHttpRequest
-// It accepts a callback function to handle success or error
+// ===============================================
+// getData(callback)
+// A reusable function that fetches data from an API
+// using XMLHttpRequest (XHR) and returns the result
+// through a callback function.
+// ===============================================
+
 let getData = (callback) => {
 
     // Create a new HTTP request object
     let request = new XMLHttpRequest();
 
-    // Listen for changes in request state (0 → 4)
+    // Listen for changes in the request state (0 → 4)
     request.addEventListener("readystatechange", () => {
 
-        // readyState 4 = request finished
-        // status 200 = success
+        // readyState 4 = request is finished
+        // status 200 = success (OK)
         if (request.readyState === 4 && request.status === 200) {
 
-            // On success → send data back with no error
-            callback(request.responseText, undefined);
+            // Convert JSON text into JavaScript object
+            let data = JSON.parse(request.responseText);
 
-        // If server returns 404 (Not Found)
+            // Return the data to the callback (no error)
+            callback(data, undefined);
+
+        // When the server returns "Not Found"
         } else if (request.readyState === 4 && request.status === 404) {
 
-            // On error → send no data but send error message
+            // Return an error message to the callback
             callback(undefined, "Could not fetch data");
-
         }
     });
 
     // Open a GET request to the API endpoint
     request.open("GET", "https://jsonplaceholder.typicode.com/todos");
 
-    // Send the request
+    // Send the request to the server
     request.send();
 };
 
 
-// Calling the function and handling the callback
+// ===============================================
+// Using getData()
+// Call the function and receive the data or error
+// ===============================================
+
 getData((data, err) => {
 
-    // If data exists → log it
+    // If data was received successfully
     if (data) {
         console.log(data);
 
-    // If error exists → log the error
+    // If an error occurred
     } else {
         console.log(err);
     }
