@@ -1,16 +1,16 @@
 # JSONPlaceholder XHR Demo
 
-This project demonstrates how to make HTTP requests in JavaScript using **XMLHttpRequest** and handle responses using a **callback function**.  
-It uses the free JSONPlaceholder API to fetch a list of todos.
+This project demonstrates how to fetch data from a public API using **XMLHttpRequest (XHR)** in JavaScript and handle responses using the **callback pattern**.  
+It uses the free JSONPlaceholder API to retrieve a list of todos and logs the parsed JSON result.
 
 ## 📌 Features
-- Simple and clean XMLHttpRequest example  
-- Demonstrates `readyState` and `status` handling  
-- Uses callback pattern for success and error  
-- Beginner-friendly structure  
-- Easy to reuse in other projects  
+- Uses XMLHttpRequest with callback-based handling  
+- Parses JSON responses using `JSON.parse()`  
+- Detects success (`status === 200`) and errors (`status === 404`)  
+- Very beginner-friendly  
+- Works in any modern browser  
 
-## 📂 Code Example
+## 📂 JavaScript Code Example
 
 ```javascript
 // Function to get data from an API using XMLHttpRequest
@@ -27,8 +27,10 @@ let getData = (callback) => {
         // status 200 = success
         if (request.readyState === 4 && request.status === 200) {
 
+            let data = JSON.parse(request.responseText);
+
             // On success → send data back with no error
-            callback(request.responseText, undefined);
+            callback(data, undefined);
 
         // If server returns 404 (Not Found)
         } else if (request.readyState === 4 && request.status === 404) {
